@@ -15,7 +15,6 @@ def _obter_lojas():
     url = 'https://www.cheapshark.com/api/1.0/stores'
     
     try:
-        # Passando o cabeçalho na requisição
         resposta = requests.get(url, headers=HEADERS)
         if resposta.status_code == 200:
             dados = resposta.json()
