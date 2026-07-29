@@ -1,18 +1,12 @@
 import pandas as pd
-from sqlalchemy import create_engine
 from pathlib import Path
 from scripts.logger import obter_logger
+from database import get_connection_db
 
 logger = obter_logger(__name__)
 
 
-def _engine():
-    caminho_db = Path(__file__).parent.parent / "databases" / "db.sqlite3"
-    db_url = f"sqlite:///{str(caminho_db.as_posix())}"
-    return create_engine(db_url)
-
-
-def excel_to_sql(nome_excel: str, nome_tabela: str):
+def excel_to_sql(nome_excel, nome_tabela):
     caminho_excel = Path(__file__).parent.parent / "data" / nome_excel
 
     if not caminho_excel.exists():
@@ -22,7 +16,7 @@ def excel_to_sql(nome_excel: str, nome_tabela: str):
         return
 
     df = pd.read_excel(caminho_excel)
-    logger.info(f"Iniciando inserção de '{nome_excel}' na tabela '{nome_tabela}'.")
+    logger.info(f"Iniciando inserção de {nome_excel} na tabela '{nome_tabela}")
 
     if "Game_ID" in df.columns:
         df = df.rename(columns={"Game_ID": "game_id"})
@@ -32,7 +26,7 @@ def excel_to_sql(nome_excel: str, nome_tabela: str):
     try:
         df.to_sql(
             name=nome_tabela,
-            con=_engine(),
+            con=get_connection_db(),
             if_exists="replace",
             index=True,
             index_label="id",
@@ -48,13 +42,8 @@ def games_to_sql():
     excel_to_sql("jogos_excel.xlsx", "jogos_brutos")
 
 
-def steam_to_sql():
-    excel_to_sql("jogos_steam_excel.xlsx", "promocoes_steam")
-
-
 def main():
     games_to_sql()
-    steam_to_sql()
 
 
 if __name__ == "__main__":
