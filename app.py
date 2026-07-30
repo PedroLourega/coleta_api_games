@@ -14,7 +14,7 @@ from database import get_connection_db, init_db
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "troque-essa-chave-por-uma-secreta-de-verdade-em-producao"
 
-GAMES_POR_PAGINA = 12
+GAMES_POR_PAGINA = 30
 
 login_manager = LoginManager()
 login_manager.login_view = "welcome"
@@ -234,6 +234,23 @@ def api_jogo_detalhe(game_id):
         "favoritado": str(game_id) in favoritos,
         "ofertas": [dict(linha) for linha in linhas],
     })
+
+
+@app.route("/api/jogos/html", methods=["GET"])
+@login_required
+def api_jogos_html():
+    busca = request.args.get("q", "").strip()
+    offset = int(request.args.get("offset", 0))
+
+    conn = get_connection_db()
+    catalogo = obter_catalogo(conn, busca=busca, offset=offset)
+    favoritos = obter_wishlist_ids(conn, int(current_user.id))
+    conn.close()
+
+    # Retorna apenas os blocos HTML puros
+    return render_template(
+        "partials/_card_jogo.html", jogos=catalogo, favoritos=favoritos
+    )
 
 
 @app.route("/api/wishlist/toggle", methods=["POST"])

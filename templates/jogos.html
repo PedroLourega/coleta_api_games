@@ -22,36 +22,17 @@
             </div>
         </div>
 
-        <div class="games-grid" id="gamesGrid">
-            {% for jogo in catalogo %}
-            <article class="news-card game-card" data-game-id="{{ jogo.Game_ID }}" data-title="{{ jogo.Title }}"
-                data-thumb="{{ jogo.Thumb or '' }}">
-                <div class="news-thumb" {% if jogo.Thumb
-                    %}style="background-image:url('{{ jogo.Thumb }}'); background-size:cover;" {% endif %}>
-                    {% if not jogo.Thumb %}<span>{{ jogo.Title[:4] | upper }}</span>{% endif %}
-                    <button
-                        class="icon-btn wishlist-toggle {{ 'is-active' if jogo.Game_ID | string in favoritos else '' }}"
-                        aria-label="Favoritar {{ jogo.Title }}" data-heart>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path
-                                d="M12 21s-7.5-4.6-10-9.1C.4 8.6 2 5 5.6 5c2 0 3.4 1 4.4 2.4C11 6 12.4 5 14.4 5 18 5 19.6 8.6 22 11.9 19.5 16.4 12 21 12 21z" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="news-body">
-                    <h3>{{ jogo.Title }}</h3>
-                    {% if jogo.Metacritic_Score %}
-                    <p style="margin:0; font-size:var(--fs-xs); color:var(--text-muted);">Metacritic: {{
-                        jogo.Metacritic_Score }}</p>
-                    {% endif %}
-                </div>
-            </article>
-            {% else %}
+        <div class="catalog-grid" id="gamesGrid">
+            {% with jogos=catalogo %}
+            {% include "partials/_card_jogo.html" %}
+            {% endwith %}
+
+            {% if not catalogo %}
             <p>Nenhum jogo encontrado ainda. Rode o pipeline de coleta primeiro.</p>
-            {% endfor %}
+            {% endif %}
         </div>
 
-        <div class="load-more-row">
+        <div class="load-more-row" style="text-align: center; margin-top: var(--space-6);">
             <button class="btn btn-ghost" id="loadMoreBtn" data-offset="{{ catalogo | length }}"
                 data-page-size="{{ games_por_pagina }}">
                 Ver mais jogos

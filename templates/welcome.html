@@ -6,34 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bem-vindo | YourSpace</title>
 
-    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 
 <body>
-    <div class="welcome-screen">
-        <span class="brand-mark">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#04101F" />
-                <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#04101F" stroke-width="1.6" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-        </span>
+    <div class="fullscreen-center">
+        <div class="floating-card is-wide">
+            <span class="brand-mark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#04101F" />
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#04101F" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span>
 
-        <h1>YourSpace</h1>
+            <h1>YourSpace</h1>
 
-        <p>Seu espaço pessoal para acompanhar jogos: notícias, promoções da sua lista de desejos e suas próprias
-            análises.</p>
+            <p>Seu espaço pessoal para acompanhar jogos: notícias, promoções da sua lista de desejos e suas próprias
+                análises.</p>
 
-        <div class="welcome-actions">
-            <a href="{{ url_for('login') }}" class="btn btn-ghost">Entrar</a>
-            <a href="{{ url_for('registrar') }}" class="btn btn-primary">Criar conta</a>
+            <div class="hero-actions" style="justify-content: center; width: 100%;">
+                <a href="{{ url_for('login') }}" class="btn btn-ghost">Entrar</a>
+                <a href="{{ url_for('registrar') }}" class="btn btn-primary">Criar conta</a>
+            </div>
         </div>
     </div>
 </body>

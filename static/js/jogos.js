@@ -14,39 +14,15 @@
     const modalHeartBtn = document.getElementById('modalHeartBtn');
     const ratingRow = document.getElementById('ratingRow');
 
-    const PAGE_SIZE = loadMoreBtn ? parseInt(loadMoreBtn.dataset.pageSize, 10) || 12 : 12;
+    const PAGE_SIZE = loadMoreBtn ? parseInt(loadMoreBtn.dataset.pageSize, 10) || 30 : 30;
 
     let termoAtual = '';
     let currentModalGameId = null;
 
-    function cardHTML(jogo) {
-        const thumbStyle = jogo.Thumb ? `style="background-image:url('${jogo.Thumb}'); background-size:cover;"` : '';
-        const thumbFallback = jogo.Thumb ? '' : `<span>${(jogo.Title || '').slice(0, 4).toUpperCase()}</span>`;
-        const metacritic = jogo.Metacritic_Score
-            ? `<p style="margin:0; font-size:var(--fs-xs); color:var(--text-muted);">Metacritic: ${jogo.Metacritic_Score}</p>`
-            : '';
-        const heartActive = jogo.favoritado ? 'is-active' : '';
-
-        return `
-      <article class="news-card game-card" data-game-id="${jogo.Game_ID}" data-title="${jogo.Title}" data-thumb="${jogo.Thumb || ''}">
-        <div class="news-thumb" ${thumbStyle}>
-          ${thumbFallback}
-          <button class="icon-btn wishlist-toggle ${heartActive}" aria-label="Favoritar ${jogo.Title}" data-heart>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.1C.4 8.6 2 5 5.6 5c2 0 3.4 1 4.4 2.4C11 6 12.4 5 14.4 5 18 5 19.6 8.6 22 11.9 19.5 16.4 12 21 12 21z"/></svg>
-          </button>
-        </div>
-        <div class="news-body">
-          <h3>${jogo.Title}</h3>
-          ${metacritic}
-        </div>
-      </article>
-    `;
-    }
-
-    async function buscarJogos(offset) {
+    async function buscarJogosHTML(offset) {
         const params = new URLSearchParams({ q: termoAtual, offset: offset });
-        const resposta = await fetch(`/api/jogos?${params.toString()}`);
-        return resposta.json();
+        const resposta = await fetch(`/api/jogos/html?${params.toString()}`);
+        return resposta.text();
     }
 
     async function toggleWishlist(gameId, titulo, thumb) {
@@ -80,14 +56,16 @@
             clearTimeout(timeoutId);
             timeoutId = setTimeout(async function () {
                 termoAtual = searchInput.value.trim();
-                const jogos = await buscarJogos(0);
+                const html = await buscarJogosHTML(0);
 
-                grid.innerHTML = jogos.length
-                    ? jogos.map(cardHTML).join('')
-                    : '<p>Nenhum jogo encontrado com esse termo.</p>';
-
-                loadMoreBtn.dataset.offset = jogos.length;
-                loadMoreBtn.style.display = jogos.length < PAGE_SIZE ? 'none' : '';
+                if (html.trim()) {
+                    grid.innerHTML = html;
+                    loadMoreBtn.dataset.offset = PAGE_SIZE;
+                    loadMoreBtn.style.display = '';
+                } else {
+                    grid.innerHTML = '<p>Nenhum jogo encontrado com esse termo.</p>';
+                    loadMoreBtn.style.display = 'none';
+                }
             }, 350);
         });
     }
@@ -95,13 +73,25 @@
     if (loadMoreBtn) {
         loadMoreBtn.addEventListener('click', async function () {
             const offset = parseInt(loadMoreBtn.dataset.offset || '0', 10);
-            const jogos = await buscarJogos(offset);
+            const originalText = loadMoreBtn.textContent;
 
-            grid.insertAdjacentHTML('beforeend', jogos.map(cardHTML).join(''));
-            loadMoreBtn.dataset.offset = offset + jogos.length;
+            loadMoreBtn.textContent = 'Carregando...';
 
-            if (jogos.length < PAGE_SIZE) {
-                loadMoreBtn.style.display = 'none';
+            try {
+                const html = await buscarJogosHTML(offset);
+
+                if (!html.trim()) {
+                    loadMoreBtn.textContent = 'Fim da lista';
+                    loadMoreBtn.disabled = true;
+                    return;
+                }
+
+                grid.insertAdjacentHTML('beforeend', html);
+                loadMoreBtn.dataset.offset = offset + PAGE_SIZE;
+                loadMoreBtn.textContent = originalText;
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                loadMoreBtn.textContent = 'Tentar novamente';
             }
         });
     }

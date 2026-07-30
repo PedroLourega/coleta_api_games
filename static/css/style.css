@@ -2,7 +2,7 @@
    1. DESIGN TOKENS
    -------------------------------------------------------------------------- */
 :root {
-    /* Fundo — camadas de profundidade em azul-marinho */
+    /* Background */
     --bg-deep: #060B18;
     --bg-surface: #0D1B33;
     --bg-surface-2: #142645;
@@ -25,11 +25,9 @@
 
     /* Estados semânticos */
     --success: #3DD9B4;
-    /* usado em promoções / descontos */
     --success-bg: rgba(61, 217, 180, 0.12);
     --warning: #F5B85C;
     --danger: #F26D6D;
-    /* favoritos / wishlist */
     --danger-bg: rgba(242, 109, 109, 0.12);
 
     /* Tipografia */
@@ -221,7 +219,7 @@ p {
 }
 
 /* --------------------------------------------------------------------------
-   4. HEADER — logo, busca, navegação e autenticação
+   4. HEADER
    -------------------------------------------------------------------------- */
 .site-header {
     position: fixed;
@@ -253,7 +251,6 @@ p {
     gap: var(--space-5);
 }
 
-/* Marca */
 .brand {
     display: flex;
     align-items: center;
@@ -281,7 +278,6 @@ p {
     height: 18px;
 }
 
-/* Busca */
 .header-search {
     flex: 1 1 auto;
     max-width: 480px;
@@ -328,7 +324,6 @@ p {
     display: none;
 }
 
-/* Navegação */
 .nav-links {
     display: flex;
     align-items: center;
@@ -366,7 +361,6 @@ p {
     width: 100%;
 }
 
-/* Ações do header (convidado / logado) */
 .header-actions {
     display: flex;
     align-items: center;
@@ -382,7 +376,6 @@ p {
     gap: var(--space-3);
 }
 
-/* Ícones (favoritos, notificações) */
 .icon-btn {
     position: relative;
     width: 40px;
@@ -431,7 +424,6 @@ p {
     border: 2px solid var(--bg-deep);
 }
 
-/* Avatar + dropdown de perfil */
 .profile-menu {
     position: relative;
 }
@@ -549,7 +541,6 @@ body[data-auth="user"] .if-guest {
     display: none !important;
 }
 
-/* Layout padrão dos blocos de autenticação dentro do header */
 .header-actions .if-guest,
 .header-actions .if-user {
     display: flex;
@@ -557,7 +548,6 @@ body[data-auth="user"] .if-guest {
     gap: var(--space-3);
 }
 
-/* Layout padrão para linhas de botão fora do header */
 .auth-row {
     display: flex;
     align-items: center;
@@ -565,7 +555,6 @@ body[data-auth="user"] .if-guest {
     flex-wrap: wrap;
 }
 
-/* Menu mobile */
 .nav-toggle {
     display: none;
     width: 40px;
@@ -693,7 +682,7 @@ body[data-auth="user"] .if-guest {
 }
 
 /* --------------------------------------------------------------------------
-   6. HERO — boas-vindas + categorias em destaque
+   6. HERO
    -------------------------------------------------------------------------- */
 .hero {
     position: relative;
@@ -742,7 +731,6 @@ body[data-auth="user"] .if-guest {
     flex-wrap: wrap;
 }
 
-/* Chips de categorias */
 .chip-row {
     display: flex;
     gap: var(--space-3);
@@ -771,12 +759,32 @@ body[data-auth="user"] .if-guest {
 }
 
 /* --------------------------------------------------------------------------
-   7. FEED DE NOTÍCIAS
+   7. FEED DE NOTÍCIAS & GRID CATALOGO
    -------------------------------------------------------------------------- */
 .news-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-5);
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+}
+
+.catalog-grid .news-thumb {
+    aspect-ratio: 1 / 1;
+    height: auto;
+}
+
+.catalog-grid .news-body h3 {
+    font-size: var(--fs-sm);
+    margin-bottom: var(--space-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .news-card {
@@ -860,7 +868,7 @@ body[data-auth="user"] .if-guest {
 }
 
 /* --------------------------------------------------------------------------
-   8. PROMOÇÕES DA LISTA DE DESEJOS
+   8. PROMOÇÕES
    -------------------------------------------------------------------------- */
 .promo-scroll {
     display: grid;
@@ -974,7 +982,7 @@ body[data-auth="user"] .if-guest {
 }
 
 /* --------------------------------------------------------------------------
-   9. CTA — criar conta
+   9. CTA
    -------------------------------------------------------------------------- */
 .cta {
     background: linear-gradient(135deg, var(--bg-surface-2) 0%, var(--bg-surface) 100%);
@@ -1098,7 +1106,183 @@ body[data-auth="user"] .if-guest {
 }
 
 /* --------------------------------------------------------------------------
-   11. RESPONSIVIDADE
+   11. COMPONENTES: CARTÃO FLUTUANTE (Welcome / Login / Registro)
+   -------------------------------------------------------------------------- */
+.fullscreen-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-deep);
+}
+
+.floating-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: var(--space-8) var(--space-6);
+    width: 90%;
+    max-width: 440px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.floating-card.is-wide {
+    max-width: 520px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.floating-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: var(--shadow-glow);
+}
+
+.floating-card .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-lg);
+    text-decoration: none;
+}
+
+.floating-card .brand-mark {
+    width: 72px;
+    height: 72px;
+    background-color: var(--bg-surface-3);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    margin-bottom: 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.floating-card .brand-mark svg {
+    width: 36px;
+    height: 36px;
+}
+
+.floating-card .brand-mark svg path[fill] {
+    fill: var(--accent);
+}
+
+.floating-card .brand-mark svg path[stroke] {
+    stroke: var(--accent);
+}
+
+.floating-card h1 {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    text-align: center;
+    margin-bottom: var(--space-2);
+}
+
+.floating-card.is-wide h1 {
+    font-size: var(--fs-3xl);
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.02em;
+}
+
+.floating-card p {
+    color: var(--text-secondary);
+    font-size: var(--fs-sm);
+    text-align: center;
+    margin-bottom: var(--space-6);
+}
+
+.floating-card.is-wide p {
+    font-size: var(--fs-md);
+    line-height: 1.6;
+}
+
+.floating-card .form-group {
+    margin-bottom: var(--space-4);
+    text-align: left;
+}
+
+.floating-card .form-group label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: var(--fs-sm);
+    margin-bottom: var(--space-2);
+}
+
+.floating-card .form-group input {
+    width: 100%;
+    padding: var(--space-3);
+    background-color: var(--bg-deep);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: var(--fs-base);
+    transition: all var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.floating-card .form-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.floating-card .btn-block {
+    width: 100%;
+    margin-top: var(--space-2);
+}
+
+.floating-card .auth-switch {
+    margin-top: var(--space-5);
+    text-align: center;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+}
+
+.floating-card .auth-switch a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.floating-card .auth-switch a:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.floating-card .flash-messages {
+    margin-bottom: var(--space-4);
+}
+
+.floating-card .flash {
+    background-color: var(--danger-bg);
+    color: var(--danger);
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-sm);
+    text-align: center;
+    border: 1px solid var(--danger);
+}
+
+/* --------------------------------------------------------------------------
+   12. RESPONSIVIDADE
    -------------------------------------------------------------------------- */
 @media (max-width: 1080px) {
     .nav-links {
@@ -1107,6 +1291,10 @@ body[data-auth="user"] .if-guest {
 
     .news-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .catalog-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 }
 
@@ -1125,6 +1313,12 @@ body[data-auth="user"] .if-guest {
 
     .header-search {
         max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .catalog-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -1183,130 +1377,8 @@ body[data-auth="user"] .if-guest {
     .promo-scroll {
         grid-auto-columns: minmax(220px, 1fr);
     }
-}
 
-/*WELCOME SCREEN*/
-.welcome-screen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: var(--space-8) var(--space-6);
-    max-width: 520px;
-    width: 90%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-}
-
-/* Efeito de brilho sutil no topo do card */
-.welcome-screen::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    box-shadow: var(--shadow-glow);
-}
-
-/* 3. Ícone / Logo */
-.brand-mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 72px;
-    height: 72px;
-    background-color: var(--bg-surface-3);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-md);
-    margin-bottom: var(--space-5);
-    box-shadow: var(--shadow-sm);
-}
-
-.brand-mark svg {
-    width: 36px;
-    height: 36px;
-}
-
-.brand-mark svg path[fill] {
-    fill: var(--accent);
-}
-
-.brand-mark svg path[stroke] {
-    stroke: var(--accent);
-}
-
-/* 4. Tipografia do Welcome */
-.welcome-screen h1 {
-    font-family: var(--font-display);
-    font-size: var(--fs-3xl);
-    color: var(--text-primary);
-    margin: 0 0 var(--space-3) 0;
-    letter-spacing: -0.02em;
-    font-weight: 700;
-}
-
-.welcome-screen p {
-    color: var(--text-secondary);
-    font-size: var(--fs-md);
-    line-height: 1.6;
-    margin: 0 0 var(--space-6) 0;
-}
-
-/* 5. Organização dos Botões */
-.welcome-actions {
-    display: flex;
-    gap: var(--space-4);
-    width: 100%;
-    justify-content: center;
-}
-
-/* 6. Estilização base dos Botões */
-.btn {
-    font-family: var(--font-display);
-    font-size: var(--fs-base);
-    font-weight: 600;
-    padding: var(--space-3) var(--space-6);
-    border-radius: var(--radius-pill);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Botão Primário (Azul) */
-.btn-primary {
-    background-color: var(--accent);
-    color: var(--bg-deep);
-    border: none;
-}
-
-.btn-primary:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
-}
-
-/* Botão Fantasma (Contorno) */
-.btn-ghost {
-    background-color: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--border-strong);
-}
-
-.btn-ghost:hover {
-    background-color: var(--bg-surface-2);
-    border-color: var(--text-secondary);
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
