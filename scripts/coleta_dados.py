@@ -1,12 +1,9 @@
-from numpy import save
 import requests
 import pandas as pd
 import time
-import logging
-from sqlalchemy import engine, create_engine, text
 from pathlib import Path
 from datetime import datetime
-from scripts.logger import obter_logger
+from .logger import obter_logger
 
 logger = obter_logger(__name__)
 
@@ -29,16 +26,44 @@ def _obter_lojas():
     return {}
 
 
-def _extrair_games_cheapshark(paginas=100):
+def _montar_registro(item, lojas_map):
+    data_lancamento = None
+
+    if item.get("releaseDate") and int(item["releaseDate"]) > 0:
+        data_lancamento = datetime.fromtimestamp(int(item["releaseDate"])).strftime(
+            "%Y-%m-%d"
+        )
+
+    return {
+        "Game_ID": item.get("gameID"),
+        "Title": item.get("title"),
+        "Store": lojas_map.get(item.get("storeID"), "Desconhecida"),
+        "Normal_Price": float(item.get("normalPrice", 0)),
+        "Sale_Price": float(item.get("salePrice", 0)),
+        "Discount_Percent": float(item.get("savings", 0)),
+        "Metacritic_Score": item.get("metacriticScore"),
+        "Steam_Rating_Pct": item.get("steamRatingPercent"),
+        "Release_Date": data_lancamento,
+        "Thumb": item.get("thumb"),
+    }
+
+
+def _extrair_deals(paginas=100, apenas_promocao=False):
     lojas_map = _obter_lojas()
     lista_games = []
+    tipo = "promoções" if apenas_promocao else "catálogo geral"
 
-    logger.info(f"Iniciando extração de {paginas} páginas...")
+    logger.info(f"Iniciando extração de {paginas} páginas ({tipo})...")
 
     for pagina in range(paginas):
         url = "https://www.cheapshark.com/api/1.0/deals"
-
         params = {"pageNumber": pagina, "pageSize": 60}
+
+        if apenas_promocao:
+            params["onSale"] = 1
+            params["sortBy"] = "Savings"
+        else:
+            params["sortBy"] = "Title"
 
         try:
             resposta = requests.get(url, params=params, headers=HEADERS)
@@ -47,67 +72,68 @@ def _extrair_games_cheapshark(paginas=100):
             dados_pagina = resposta.json()
 
             if not dados_pagina:
+                logger.info(f"[{tipo}] Página {pagina} veio vazia, encerrando.")
                 break
 
             for item in dados_pagina:
-                data_lancamento = None
+                lista_games.append(_montar_registro(item, lojas_map))
 
-                if item.get("releaseDate") and int(item["releaseDate"]) > 0:
-                    data_lancamento = datetime.fromtimestamp(
-                        int(item["releaseDate"])
-                    ).strftime("%Y-%m-%d")
-
-                registros = {
-                    "Game_ID": item.get("gameID"),
-                    "Title": item.get("title"),
-                    "Store": lojas_map.get(item.get("storeID"), "Desconhecida"),
-                    "Normal_Price": float(item.get("normalPrice", 0)),
-                    "Sale_Price": float(item.get("salePrice", 0)),
-                    "Discount_Percent": float(item.get("savings", 0)),
-                    "Metacritic_Score": item.get("metacriticScore"),
-                    "Steam_Rating_Pct": item.get("steamRatingPercent"),
-                    "Release_Date": data_lancamento,
-                    "Thumb": item.get("thumb"),
-                }
-                lista_games.append(registros)
-
-            logger.info(f"Página: {pagina} processada com sucesso.")
-
+            logger.info(f"[{tipo}] Página {pagina} processada com sucesso.")
             time.sleep(1)
 
         except requests.exceptions.HTTPError as erro_http:
-            logger.error(f"Erro HTTP na página {pagina}: {erro_http}")
+            logger.error(f"Erro HTTP na página {pagina} ({tipo}): {erro_http}")
             break
         except requests.exceptions.RequestException as erro_requests:
-            logger.error(f"Erro na rede ou conexão do Requests: {erro_requests}")
+            logger.error(
+                f"Erro na rede ou conexão do Requests ({tipo}): {erro_requests}"
+            )
             break
         except Exception as e:
-            logger.exception(f"Erro no sistema: {e}")
+            logger.exception(f"Erro no sistema ({tipo}): {e}")
             break
+
+    if lista_games:
+        sem_desconto = sum(1 for g in lista_games if g["Discount_Percent"] == 0)
+        logger.info(
+            f"[{tipo}] Extração finalizada: {len(lista_games)} registros "
+            f"({sem_desconto} sem desconto ativo, {len(lista_games) - sem_desconto} com desconto)."
+        )
+    else:
+        logger.info(f"[{tipo}] Extração finalizada: 0 registros.")
 
     return lista_games
 
 
-def games_to_excel():
+def _salvar_excel(dados, nome_arquivo):
     pasta_data = Path(__file__).resolve().parent.parent / "data"
-    save_excel = pasta_data / "jogos_excel.xlsx"
-
-    dados = _extrair_games_cheapshark()
+    save_excel = pasta_data / nome_arquivo
 
     if save_excel.exists():
         save_excel.unlink()
-        logger.info("O arquivo antigo excel foi deletado.")
+        logger.info(f"Arquivo antigo '{nome_arquivo}' deletado.")
 
     if dados:
         df_games = pd.DataFrame(dados)
         df_games.to_excel(save_excel, index=False)
-        logger.info(f"Pipeline finalizado. Arquivo gerado em: {save_excel}")
+        logger.info(f"Arquivo gerado em: {save_excel} ({len(dados)} registros).")
     else:
-        logger.info("Não foi possível gerar o arquivo.")
+        logger.info(f"Não foi possível gerar '{nome_arquivo}': nenhum dado coletado.")
+
+
+def jogos_gerais_to_excel(paginas=100):
+    dados = _extrair_deals(paginas=paginas, apenas_promocao=False)
+    _salvar_excel(dados, "jogos_excel.xlsx")
+
+
+def promocoes_to_excel(paginas=100):
+    dados = _extrair_deals(paginas=paginas, apenas_promocao=True)
+    _salvar_excel(dados, "jogos_promocoes_excel.xlsx")
 
 
 def main():
-    games_to_excel()
+    jogos_gerais_to_excel()
+    promocoes_to_excel()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 import pandas as pd
 from pathlib import Path
-from scripts.logger import obter_logger
+from .logger import obter_logger
 from database import get_connection_db
 
 logger = obter_logger(__name__)
@@ -38,12 +38,17 @@ def excel_to_sql(nome_excel, nome_tabela):
         logger.warning(f"Erro ao inserir dados em '{nome_tabela}': {e}")
 
 
+def promocoes_cheapshark_to_sql():
+    excel_to_sql("jogos_promocoes_excel.xlsx", "promocoes_cheapshark")
+
+
 def games_to_sql():
     excel_to_sql("jogos_excel.xlsx", "jogos_brutos")
 
 
 def main():
     games_to_sql()
+    promocoes_cheapshark_to_sql()
 
 
 if __name__ == "__main__":
