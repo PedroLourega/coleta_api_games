@@ -1,0 +1,75 @@
+<header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+        <a href="{{ url_for('home') }}" class="brand">
+            <span class="brand-mark">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#04101F" />
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#04101F" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span>
+            YourSpace
+        </a>
+
+        <!-- Atalho de busca -->
+        <div class="header-search">
+            <div class="search-field">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="M21 21l-4.3-4.3" stroke-linecap="round" />
+                </svg>
+                <input type="search" placeholder="Buscar jogos..." aria-label="Buscar jogos" readonly
+                    onclick="window.location.href='{{ url_for('jogos') }}'" />
+            </div>
+        </div>
+
+        <nav class="nav-links" aria-label="Navegação principal">
+            <a href="{{ url_for('home') }}" class="{{ 'is-active' if request.endpoint == 'home' else '' }}">Feed</a>
+            <a href="{{ url_for('home') }}#promocoes">Promoções</a>
+            <a href="{{ url_for('jogos') }}" class="{{ 'is-active' if request.endpoint == 'jogos' else '' }}">Jogos</a>
+            <a href="{{ url_for('home') }}#analises">Minhas análises</a>
+        </nav>
+
+        <div class="header-actions">
+            <button class="icon-btn is-active" aria-label="Lista de desejos"
+                onclick="window.location.href='{{ url_for('jogos') }}'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M12 21s-7.5-4.6-10-9.1C.4 8.6 2 5 5.6 5c2 0 3.4 1 4.4 2.4C11 6 12.4 5 14.4 5 18 5 19.6 8.6 22 11.9 19.5 16.4 12 21 12 21z" />
+                </svg>
+            </button>
+
+            <div class="profile-menu" id="profileMenu">
+                <button class="avatar-btn" id="avatarBtn" aria-haspopup="true" aria-expanded="false">
+                    <span class="avatar-img">{{ current_user.nome[:2] | upper }}</span>
+                    <span>{{ current_user.nome.split(' ')[0] }}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+
+                <div class="dropdown" role="menu">
+                    <a href="#" role="menuitem">Meu perfil</a>
+                    <a href="{{ url_for('jogos') }}" role="menuitem">Lista de desejos</a>
+                    <a href="{{ url_for('home') }}#analises" role="menuitem">Minhas análises</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ url_for('logout') }}" class="danger" role="menuitem">Sair</a>
+                </div>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+            </button>
+        </div>
+    </div>
+
+    <div class="mobile-panel" id="mobilePanel">
+        <div class="mobile-panel-inner">
+            <a href="{{ url_for('home') }}">Feed</a>
+            <a href="{{ url_for('home') }}#promocoes">Promoções</a>
+            <a href="{{ url_for('jogos') }}">Jogos</a>
+            <a href="{{ url_for('home') }}#analises">Minhas análises</a>
+            <a href="{{ url_for('logout') }}" class="danger">Sair</a>
+        </div>
+    </div>
+</header>

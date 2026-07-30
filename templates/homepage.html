@@ -1,380 +1,178 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>YourSpace — Seu feed de jogos</title>
-    <meta name="description"
-        content="YourSpace: acompanhe notícias, promoções e monte sua lista de desejos dos jogos que você segue." />
+{% block title %}YourSpace — Seu feed de jogos{% endblock %}
 
-    <!-- Fontes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet">
+{% block content %}
+<!-- ======================= HERO ======================= -->
+<section class="hero">
+    <div class="container hero-inner">
+        <span class="eyebrow">Feed pessoal</span>
+        <h1>Tudo sobre os jogos que você <span>ama</span>, em um só lugar.</h1>
+        <p class="hero-lead">
+            Notícias dos jogos que você segue, promoções da sua lista de desejos e uma busca rápida
+            para descobrir qualquer título. Só o que importa para você em um só lugar.
+        </p>
 
-    <!-- Estilos -->
-    <link rel="stylesheet" href="/static/style.css" />
-</head>
-
-<body data-auth="guest">
-
-    <!-- ======================= HEADER ======================= -->
-    <header class="site-header" id="siteHeader">
-        <div class="container header-inner">
-
-            <a href="home.html" class="brand">
-                <span class="brand-mark">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#04101F" />
-                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#04101F" stroke-width="1.6"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </span>
-                YourSpace
-            </a>
-
-            <!-- Busca -->
-            <div class="header-search">
-                <div class="search-field">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="7" />
-                        <path d="M21 21l-4.3-4.3" stroke-linecap="round" />
-                    </svg>
-                    <input type="search" placeholder="Buscar jogos, notícias, análises..."
-                        aria-label="Buscar jogos, notícias e análises" />
-                </div>
+        <div class="hero-actions">
+            <!-- Como a página é protegida, mostramos direto o botão do usuário logado -->
+            <div class="auth-row">
+                <a href="#jogos" class="btn btn-primary">Adicionar jogo à lista</a>
             </div>
+        </div>
 
-            <!-- Navegação -->
-            <nav class="nav-links" aria-label="Navegação principal">
-                <a href="home.html" class="is-active">Feed</a>
-                <a href="#descobrir">Descobrir</a>
-                <a href="#analises">Minhas análises</a>
-            </nav>
+        <div class="chip-row" aria-label="Categorias em destaque">
+            <a href="#" class="chip is-active">Em alta</a>
+            <a href="#" class="chip">RPG</a>
+            <a href="#" class="chip">Ação/Aventura</a>
+            <a href="#" class="chip">Indie</a>
+            <a href="#" class="chip">Estratégia</a>
+            <a href="#" class="chip">Co-op</a>
+        </div>
+    </div>
+</section>
 
-            <!-- Ações -->
-            <div class="header-actions">
+<!-- ======================= FEED DE NOTÍCIAS ======================= -->
+<section class="section" id="descobrir">
+    <div class="container">
+        <div class="section-heading">
+            <div class="section-heading-text">
+                <span class="eyebrow">Seu feed</span>
+                <h2>Novidades dos jogos que você segue</h2>
+                <p>Atualizações, DLCs, patches e anúncios dos títulos que estão na sua lista.</p>
+            </div>
+            <a href="#" class="see-all">Ver tudo →</a>
+        </div>
 
-                <!-- Visitante (não logado) -->
-                <div class="if-guest">
-                    <a href="#" class="btn btn-ghost">Entrar</a>
-                    <a href="#" class="btn btn-primary">Criar conta</a>
+        <div class="news-grid">
+            <article class="news-card">
+                <div class="news-thumb">
+                    <span class="news-tag">Atualização</span>
+                    <span>ELDEN</span>
                 </div>
+                <div class="news-body">
+                    <div class="news-meta">Elden Ring<span class="dot"></span><span>há 2 horas</span></div>
+                    <h3>Novo DLC traz área secreta e três chefes inéditos</h3>
+                    <p>FromSoftware confirma expansão para o segundo semestre com novas mecânicas de combate.</p>
+                </div>
+            </article>
 
-                <!-- Usuário logado -->
-                <div class="if-user">
-                    <button class="icon-btn is-active" aria-label="Lista de desejos">
+            <article class="news-card">
+                <div class="news-thumb">
+                    <span class="news-tag">Patch</span>
+                    <span>BG3</span>
+                </div>
+                <div class="news-body">
+                    <div class="news-meta">Baldur's Gate 3<span class="dot"></span><span>há 5 horas</span></div>
+                    <h3>Patch 9 corrige bugs de multiplayer e balanceia classes</h3>
+                    <p>Larian Studios libera atualização com mais de 200 correções reportadas pela comunidade.</p>
+                </div>
+            </article>
+
+            <article class="news-card">
+                <div class="news-thumb">
+                    <span class="news-tag">Anúncio</span>
+                    <span>HZD</span>
+                </div>
+                <div class="news-body">
+                    <div class="news-meta">Horizon<span class="dot"></span><span>ontem</span></div>
+                    <h3>Guerrilla Games anuncia próximo capítulo da franquia</h3>
+                    <p>Primeiro trailer mostra novo mapa e mecânicas de exploração aérea.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- ======================= PROMOÇÕES (CheapShark + Steam) ======================= -->
+<section class="section" id="promocoes">
+    <div class="container">
+        <div class="section-heading">
+            <div class="section-heading-text">
+                <span class="eyebrow">Lista de desejos</span>
+                <h2>Promoções nos jogos que você quer</h2>
+                <p>Dados coletados do CheapShark e da Steam, atualizados periodicamente pelo pipeline.</p>
+            </div>
+            <a href="#" class="see-all">Ver lista completa →</a>
+        </div>
+
+        <div class="promo-scroll">
+            {% for p in promocoes %}
+            <article class="promo-card">
+                <div class="promo-thumb" {% if p.Thumb
+                    %}style="background-image:url('{{ p.Thumb }}'); background-size:cover;" {% endif %}>
+                    <span class="discount-badge">-{{ p.Discount_Percent | round | int }}%</span>
+                    {% if not p.Thumb %}<span>{{ p.Title[:4] | upper }}</span>{% endif %}
+                </div>
+                <div class="promo-body">
+                    <h3>{{ p.Title }}</h3>
+                    <div class="price-row">
+                        <span class="price-old">R$ {{ "%.2f" | format(p.Normal_Price) }}</span>
+                        <span class="price-new">R$ {{ "%.2f" | format(p.Sale_Price) }}</span>
+                    </div>
+                    <p style="margin: var(--space-2) 0 0; font-size: var(--fs-xs); color: var(--text-muted);">
+                        {{ p.Store }}</p>
+                </div>
+            </article>
+            {% else %}
+            <p>Nenhuma promoção encontrada ainda. Rode <code>run_collectors.py</code> pra popular o banco.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ======================= JOGOS ======================= -->
+<section class="section" id="jogos">
+    <div class="container">
+        <div class="section-heading">
+            <div class="section-heading-text">
+                <span class="eyebrow">Descubra</span>
+                <h2>Adicione jogos à sua lista de desejos</h2>
+                <p>Favorite pra acompanhar notícias e ser avisado quando entrar em promoção.</p>
+            </div>
+        </div>
+
+        <div class="news-grid">
+            {% for jogo in jogos %}
+            <article class="news-card">
+                <div class="news-thumb" {% if jogo.Thumb
+                    %}style="background-image:url('{{ jogo.Thumb }}'); background-size:cover;" {% endif %}>
+                    {% if not jogo.Thumb %}<span>{{ jogo.Title[:4] | upper }}</span>{% endif %}
+                    <button class="icon-btn" aria-label="Adicionar {{ jogo.Title }} à lista de desejos"
+                        data-wishlist-add="{{ jogo.Game_ID }}"
+                        style="position:absolute; top:var(--space-3); right:var(--space-3);">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path
                                 d="M12 21s-7.5-4.6-10-9.1C.4 8.6 2 5 5.6 5c2 0 3.4 1 4.4 2.4C11 6 12.4 5 14.4 5 18 5 19.6 8.6 22 11.9 19.5 16.4 12 21 12 21z" />
                         </svg>
-                        <span class="badge-count">3</span>
                     </button>
-
-                    <button class="icon-btn" aria-label="Notificações">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M13.7 21a2 2 0 01-3.4 0" stroke-linecap="round" />
-                        </svg>
-                        <span class="badge-count">5</span>
-                    </button>
-
-                    <div class="profile-menu" id="profileMenu">
-                        <button class="avatar-btn" id="avatarBtn" aria-haspopup="true" aria-expanded="false">
-                            <span class="avatar-img">RB</span>
-                            <span>Raul</span>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </button>
-
-                        <div class="dropdown" role="menu">
-                            <a href="#" role="menuitem">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="8" r="4" />
-                                    <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
-                                </svg>
-                                Meu perfil
-                            </a>
-                            <a href="#" role="menuitem">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path
-                                        d="M12 21s-7.5-4.6-10-9.1C.4 8.6 2 5 5.6 5c2 0 3.4 1 4.4 2.4C11 6 12.4 5 14.4 5 18 5 19.6 8.6 22 11.9 19.5 16.4 12 21 12 21z" />
-                                </svg>
-                                Lista de desejos
-                            </a>
-                            <a href="#" role="menuitem">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 19h16M4 15l4-4 3 3 5-6 4 5" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                                Minhas análises
-                            </a>
-                            <a href="#" role="menuitem">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="3" />
-                                    <path
-                                        d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.9 2.9l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.6V21a2 2 0 11-4 0v-.2a1.7 1.7 0 00-1-1.5 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.9-2.9l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.2a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.9-2.9l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.2a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.9 2.9l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1h.2a2 2 0 110 4h-.2a1.7 1.7 0 00-1.5 1z" />
-                                </svg>
-                                Configurações
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="danger" role="menuitem" data-demo-auth-toggle>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M16 17l5-5-5-5M21 12H9" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Sair
-                            </a>
-                        </div>
-                    </div>
                 </div>
+                <div class="news-body">
+                    <h3>{{ jogo.Title }}</h3>
+                    {% if jogo.Metacritic_Score %}
+                    <p style="margin:0; font-size: var(--fs-xs); color: var(--text-muted);">
+                        Metacritic: {{ jogo.Metacritic_Score }}</p>
+                    {% endif %}
+                </div>
+            </article>
+            {% else %}
+            <p>Nenhum jogo encontrado ainda. Rode o pipeline de coleta primeiro.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
-                <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
-                    <span></span>
-                </button>
+<!-- ======================= CTA ======================= -->
+<section class="section" id="analises">
+    <div class="container">
+        <div class="cta">
+            <span class="eyebrow">Seu espaço</span>
+            <h2>Escreva sua próxima análise</h2>
+            <p>Compartilhe o que achou dos jogos que zerou recentemente e organize suas impressões em um só lugar.</p>
+            <div class="cta-actions">
+                <a href="#" class="btn btn-primary">Criar análise</a>
+                <a href="#" class="btn btn-ghost">Ver meu perfil</a>
             </div>
         </div>
-
-        <!-- Painel mobile: busca + navegação -->
-        <div class="mobile-panel" id="mobilePanel">
-            <div class="mobile-panel-inner">
-                <div class="search-field">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="7" />
-                        <path d="M21 21l-4.3-4.3" stroke-linecap="round" />
-                    </svg>
-                    <input type="search" id="mobileSearchInput" placeholder="Buscar jogos, notícias, análises..."
-                        aria-label="Buscar" />
-                </div>
-                <a href="home.html" class="is-active">Feed</a>
-                <a href="#descobrir">Descobrir</a>
-                <a href="#promocoes">Promoções</a>
-                <a href="#analises">Minhas análises</a>
-                <div class="if-guest auth-row" style="margin-top: 0.5rem;">
-                    <a href="#" class="btn btn-ghost" style="flex:1;">Entrar</a>
-                    <a href="#" class="btn btn-primary" style="flex:1;">Criar conta</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <!-- ======================= HERO ======================= -->
-        <section class="hero">
-            <div class="container hero-inner">
-                <span class="eyebrow">Feed pessoal</span>
-                <h1>Tudo sobre os jogos que você <span>ama</span>, em um só lugar.</h1>
-                <p class="hero-lead">
-                    Notícias dos jogos que você segue, promoções da sua lista de desejos e uma busca rápida
-                    para descobrir qualquer título. Só o que importa para você em um só lugar.
-                </p>
-
-                <div class="hero-actions">
-                    <div class="if-guest auth-row">
-                        <a href="#" class="btn btn-primary">Criar conta grátis</a>
-                    </div>
-                    <div class="if-user auth-row">
-                        <a href="#" class="btn btn-primary">Adicionar jogo à lista</a>
-                    </div>
-                </div>
-
-                <div class="chip-row" aria-label="Categorias em destaque">
-                    <a href="#" class="chip is-active">Em alta</a>
-                    <a href="#" class="chip">RPG</a>
-                    <a href="#" class="chip">Ação/Aventura</a>
-                    <a href="#" class="chip">Indie</a>
-                    <a href="#" class="chip">Estratégia</a>
-                    <a href="#" class="chip">Co-op</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- ======================= FEED DE NOTÍCIAS ======================= -->
-        <section class="section" id="descobrir">
-            <div class="container">
-                <div class="section-heading">
-                    <div class="section-heading-text">
-                        <span class="eyebrow">Seu feed</span>
-                        <h2>Novidades dos jogos que você segue</h2>
-                        <p>Atualizações, DLCs, patches e anúncios dos títulos que estão na sua lista.</p>
-                    </div>
-                    <a href="#" class="see-all">Ver tudo →</a>
-                </div>
-
-                <div class="news-grid">
-                    <article class="news-card">
-                        <div class="news-thumb">
-                            <span class="news-tag">Atualização</span>
-                            <span>ELDEN</span>
-                        </div>
-                        <div class="news-body">
-                            <div class="news-meta">Elden Ring<span class="dot"></span><span>há 2 horas</span></div>
-                            <h3>Novo DLC traz área secreta e três chefes inéditos</h3>
-                            <p>FromSoftware confirma expansão para o segundo semestre com novas mecânicas de combate.
-                            </p>
-                        </div>
-                    </article>
-
-                    <article class="news-card">
-                        <div class="news-thumb">
-                            <span class="news-tag">Patch</span>
-                            <span>BG3</span>
-                        </div>
-                        <div class="news-body">
-                            <div class="news-meta">Baldur's Gate 3<span class="dot"></span><span>há 5 horas</span></div>
-                            <h3>Patch 9 corrige bugs de multiplayer e balanceia classes</h3>
-                            <p>Larian Studios libera atualização com mais de 200 correções reportadas pela comunidade.
-                            </p>
-                        </div>
-                    </article>
-
-                    <article class="news-card">
-                        <div class="news-thumb">
-                            <span class="news-tag">Anúncio</span>
-                            <span>HZD</span>
-                        </div>
-                        <div class="news-body">
-                            <div class="news-meta">Horizon<span class="dot"></span><span>ontem</span></div>
-                            <h3>Guerrilla Games anuncia próximo capítulo da franquia</h3>
-                            <p>Primeiro trailer mostra novo mapa e mecânicas de exploração aérea.</p>
-                        </div>
-                    </article>
-
-                    <article class="news-card">
-                        <div class="news-thumb">
-                            <span class="news-tag">Evento</span>
-                            <span>VAL</span>
-                        </div>
-                        <div class="news-body">
-                            <div class="news-meta">Valorant<span class="dot"></span><span>ontem</span></div>
-                            <h3>Novo agente chega ao jogo na próxima semana</h3>
-                            <p>Riot Games revela habilidades do personagem em vídeo de apresentação.</p>
-                        </div>
-                    </article>
-
-                    <article class="news-card">
-                        <div class="news-thumb">
-                            <span class="news-tag">Review</span>
-                            <span>HFW</span>
-                        </div>
-                        <div class="news-body">
-                            <div class="news-meta">Comunidade<span class="dot"></span><span>2 dias atrás</span></div>
-                            <h3>Análise: vale a pena voltar após as últimas atualizações?</h3>
-                            <p>Confira o que mudou no sistema de combate e nas missões secundárias.</p>
-                        </div>
-                    </article>
-
-                    <article class="news-card">
-                        <div class="news-thumb">
-                            <span class="news-tag">Notícia</span>
-                            <span>STL</span>
-                        </div>
-                        <div class="news-body">
-                            <div class="news-meta">Stardew Valley<span class="dot"></span><span>3 dias atrás</span>
-                            </div>
-                            <h3>Criador confirma novo conteúdo gratuito para 2026</h3>
-                            <p>Atualização trará nova região e mais opções de customização da fazenda.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- ======================= CTA — criar conta ======================= -->
-        <section class="section" id="analises">
-            <div class="container">
-                <div class="cta if-guest">
-                    <span class="eyebrow">Comece agora</span>
-                    <h2>Crie sua conta e monte seu espaço de jogos</h2>
-                    <p>Favorite jogos, escreva suas próprias análises e acompanhe promoções da sua lista de desejos —
-                        tudo em um perfil só seu.</p>
-                    <div class="cta-actions">
-                        <a href="#" class="btn btn-primary">Criar conta grátis</a>
-                        <a href="#" class="btn btn-ghost">Já tenho conta</a>
-                    </div>
-                </div>
-
-                <div class="cta if-user">
-                    <span class="eyebrow">Seu espaço</span>
-                    <h2>Escreva sua próxima análise</h2>
-                    <p>Compartilhe o que achou dos jogos que zerou recentemente e organize suas impressões em um só
-                        lugar.</p>
-                    <div class="cta-actions">
-                        <a href="#" class="btn btn-primary">Criar análise</a>
-                        <a href="#" class="btn btn-ghost">Ver meu perfil</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- ======================= FOOTER ======================= -->
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-brand">
-                    <a href="home.html" class="brand">
-                        <span class="brand-mark">
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#04101F" />
-                            </svg>
-                        </span>
-                        YourSpace
-                    </a>
-                    <p>Seu espaço pessoal para acompanhar jogos: feed de notícias, lista de desejos com promoções e suas
-                        próprias análises.</p>
-                    <div class="footer-social">
-                        <a href="#" aria-label="Instagram">IG</a>
-                        <a href="#" aria-label="Twitter/X">X</a>
-                        <a href="#" aria-label="Discord">DC</a>
-                    </div>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Plataforma</h4>
-                    <ul>
-                        <li><a href="home.html">Feed</a></li>
-                        <li><a href="#descobrir">Descobrir jogos</a></li>
-                        <li><a href="#analises">Minhas análises</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Comunidade</h4>
-                    <ul>
-                        <li><a href="#">Jogos em alta</a></li>
-                        <li><a href="#">Categorias</a></li>
-                        <li><a href="#">Central de ajuda</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>Empresa</h4>
-                    <ul>
-                        <li><a href="#">Sobre o YourSpace</a></li>
-                        <li><a href="#">Contato</a></li>
-                        <li><a href="#">Status</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2026 YourSpace. Todos os direitos reservados.</p>
-                <div class="footer-legal">
-                    <a href="#">Privacidade</a>
-                    <a href="#">Termos</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="../js/header.js"></script>
-</body>
-
-</html>
+    </div>
+</section>
+{% endblock %}

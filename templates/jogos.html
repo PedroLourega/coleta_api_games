@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Jogos | YourSpace{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: calc(var(--header-height) + var(--space-6));">
+    <div class="container">
+        <div class="section-heading">
+            <div class="section-heading-text">
+                <span class="eyebrow">Catálogo</span>
+                <h2>Todos os jogos</h2>
+                <p>Clique no coração pra favoritar, ou no card pra ver mais detalhes.</p>
+            </div>
+        </div>
+
+        <div class="catalog-toolbar">
+            <div class="search-field">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="M21 21l-4.3-4.3" stroke-linecap="round" />
+                </svg>
+                <input type="search" id="catalogSearch" placeholder="Buscar por título..." />
+            </div>
+        </div>
+
+        <div class="games-grid" id="gamesGrid">
+            {% for jogo in catalogo %}
+            <article class="news-card game-card" data-game-id="{{ jogo.Game_ID }}" data-title="{{ jogo.Title }}"
+                data-thumb="{{ jogo.Thumb or '' }}">
+                <div class="news-thumb" {% if jogo.Thumb
+                    %}style="background-image:url('{{ jogo.Thumb }}'); background-size:cover;" {% endif %}>
+                    {% if not jogo.Thumb %}<span>{{ jogo.Title[:4] | upper }}</span>{% endif %}
+                    <button
+                        class="icon-btn wishlist-toggle {{ 'is-active' if jogo.Game_ID | string in favoritos else '' }}"
+                        aria-label="Favoritar {{ jogo.Title }}" data-heart>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M12 21s-7.5-4.6-10-9.1C.4 8.6 2 5 5.6 5c2 0 3.4 1 4.4 2.4C11 6 12.4 5 14.4 5 18 5 19.6 8.6 22 11.9 19.5 16.4 12 21 12 21z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="news-body">
+                    <h3>{{ jogo.Title }}</h3>
+                    {% if jogo.Metacritic_Score %}
+                    <p style="margin:0; font-size:var(--fs-xs); color:var(--text-muted);">Metacritic: {{
+                        jogo.Metacritic_Score }}</p>
+                    {% endif %}
+                </div>
+            </article>
+            {% else %}
+            <p>Nenhum jogo encontrado ainda. Rode o pipeline de coleta primeiro.</p>
+            {% endfor %}
+        </div>
+
+        <div class="load-more-row">
+            <button class="btn btn-ghost" id="loadMoreBtn" data-offset="{{ catalogo | length }}"
+                data-page-size="{{ games_por_pagina }}">
+                Ver mais jogos
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ======================= MODAL DE DETALHES ======================= -->
+<div class="modal-overlay" id="gameModal">
+    <div class="modal" style="position:relative;">
+        <button class="icon-btn modal-close" id="modalClose" aria-label="Fechar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
+            </svg>
+        </button>
+
+        <div class="modal-thumb" id="modalThumb"></div>
+        <h2 id="modalTitle"></h2>
+
+        <div class="modal-stores" id="modalStores"></div>
+
+        <button class="btn btn-ghost btn-block" id="modalHeartBtn">Adicionar à lista de desejos</button>
+
+        <div class="review-form">
+            <h4>Escrever uma análise</h4>
+            <div class="rating-row" id="ratingRow">
+                {% for i in range(1, 6) %}
+                <button type="button" data-rating="{{ i }}">{{ i }}</button>
+                {% endfor %}
+            </div>
+            <textarea placeholder="O que você achou desse jogo?"></textarea>
+            <button type="button" class="btn btn-primary" style="margin-top: var(--space-3);" disabled title="Em breve">
+                Publicar análise (em breve)
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/jogos.js') }}"></script>
+{% endblock %}

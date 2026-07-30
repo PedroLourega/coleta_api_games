@@ -1,0 +1,58 @@
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <a href="{{ url_for('home') }}" class="brand">
+                    <span class="brand-mark">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#04101F" />
+                        </svg>
+                    </span>
+                    YourSpace
+                </a>
+                <p>Seu espaço pessoal para acompanhar jogos: feed de notícias, lista de desejos com promoções e suas
+                    próprias análises.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Instagram">IG</a>
+                    <a href="#" aria-label="Twitter/X">X</a>
+                    <a href="#" aria-label="Discord">DC</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Plataforma</h4>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Feed</a></li>
+                    <li><a href="{{ url_for('home') }}#promocoes">Promoções</a></li>
+                    <li><a href="{{ url_for('jogos') }}">Jogos</a></li>
+                    <li><a href="{{ url_for('home') }}#analises">Minhas análises</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Comunidade</h4>
+                <ul>
+                    <li><a href="#">Jogos em alta</a></li>
+                    <li><a href="#">Categorias</a></li>
+                    <li><a href="#">Central de ajuda</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Conta</h4>
+                <ul>
+                    <li><a href="#">Meu perfil</a></li>
+                    <li><a href="{{ url_for('logout') }}">Sair</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 YourSpace. Todos os direitos reservados.</p>
+            <div class="footer-legal">
+                <a href="#">Privacidade</a>
+                <a href="#">Termos</a>
+            </div>
+        </div>
+    </div>
+</footer>

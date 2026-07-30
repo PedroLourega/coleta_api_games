@@ -86,12 +86,10 @@
             avatarBtn.setAttribute('aria-expanded', String(isOpen));
         });
 
-        // fecha ao clicar fora
         document.addEventListener('click', function (event) {
             if (!profileMenu.contains(event.target)) closeProfileMenu();
         });
 
-        // fecha com Esc
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape') closeProfileMenu();
         });

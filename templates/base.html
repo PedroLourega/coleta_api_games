@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}YourSpace{% endblock %}</title>
+    <meta name="description"
+        content="YourSpace: acompanhe notícias, promoções e monte sua lista de desejos dos jogos que você segue." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body>
+    {% include "partials/_header.html" %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>
