@@ -19,7 +19,7 @@
 
         if (scrollingDown && pastThreshold) {
             header.classList.add('header--hidden');
-            closeProfileMenu();     // fecha dropdowns abertos ao esconder o header
+            closeProfileMenu();
             closeMobilePanel();
         } else {
             header.classList.remove('header--hidden');

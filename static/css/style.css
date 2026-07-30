@@ -1206,7 +1206,7 @@ body[data-auth="user"] .if-guest {
     overflow: hidden;
 }
 
-/* Efeito de brilho sutil no topo do card para dar profundidade */
+/* Efeito de brilho sutil no topo do card */
 .welcome-screen::before {
     content: '';
     position: absolute;
@@ -1238,7 +1238,6 @@ body[data-auth="user"] .if-guest {
     height: 36px;
 }
 
-/* Força a cor do SVG bater com seu tema (sobrescrevendo o #04101F do HTML) */
 .brand-mark svg path[fill] {
     fill: var(--accent);
 }
@@ -1298,7 +1297,6 @@ body[data-auth="user"] .if-guest {
     background-color: var(--accent-hover);
     transform: translateY(-2px);
     box-shadow: var(--shadow-glow);
-    /* Usa seu brilho azul */
 }
 
 /* Botão Fantasma (Contorno) */
